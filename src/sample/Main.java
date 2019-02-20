@@ -1,4 +1,4 @@
-package sample;
+
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -22,8 +22,7 @@ import javafx.stage.Stage;
 import javafx.scene.control.Button;
 
 
-
-public class Main extends Application {
+	public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
@@ -74,8 +73,9 @@ public class Main extends Application {
         primaryStage.show();
     }
 
-
     public static void main(String[] args) {
         launch(args);
     }
+
+
 }
