@@ -1,8 +1,7 @@
 package sample;
 
-import java.io.File;
-
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -23,100 +22,73 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.scene.control.Button;
 
+
 public class Main extends Application {
 
-public static void Encrypt_GUI(String[] args) {
+public static void Main(String[] args) {
 launch(args);
-
-
 }
 
+@Override
+public void start(Stage primaryStage) throws Exception{
+	primaryStage.setTitle("Login");
+    GridPane grid = new GridPane();
+    grid.setAlignment(Pos.CENTER);
+    grid.setHgap(30);
+    grid.setVgap(30);
+    grid.setPadding(new Insets(40, 40, 40, 40));
 
-    public void start(Stage primaryStage) throws Exception{
-
-        primaryStage.setTitle("Login");
-        GridPane grid = new GridPane();
-        grid.setAlignment(Pos.CENTER);
-        grid.setHgap(30);
-        grid.setVgap(30);
-        grid.setPadding(new Insets(40, 40, 40, 40));
-
-        Text scenetitle = new Text("Welcome");
-        scenetitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
-        grid.add(scenetitle, 0, 0, 2, 1);
-
-        Label FilepathLabel = new Label("Enter Filepath To Encrypt");
-        grid.add(FilepathLabel, 0, 1);
-
-        TextField path = new TextField();
-        grid.add(path, 1, 1);
+    Text scenetitle = new Text("Welcome");
+    scenetitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
+    grid.add(scenetitle, 0, 0, 2, 1);
 
 
-        Label FileNameLabel = new Label("Enter File Name");
-        grid.add(FileNameLabel, 0, 2);
+    Button Encrypt = new Button("Encrypt New File");
+    HBox hbBtn = new HBox(10);
+    hbBtn.setAlignment(Pos.CENTER_LEFT);
+    hbBtn.getChildren().add(Encrypt);
+    grid.add(hbBtn, 1, 1);
 
-        TextField name = new TextField();
-        grid.add(name, 1, 2);
+    final Text actiontarget = new Text();
+        grid.add(actiontarget, 1, 1);
 
+    Button Decrypt = new Button("Decrypt A Previous File");
+    HBox DecBtn = new HBox(10);
+    DecBtn.setAlignment(Pos.CENTER_RIGHT);
+    DecBtn.getChildren().add(Decrypt);
+    grid.add(DecBtn, 1, 2);
 
-        Label pw = new Label("Enter Key For Encryption");
-        grid.add(pw, 0, 3);
+    final Text Decryptaction = new Text();
+    grid.add(Decryptaction, 1, 2);
 
-        PasswordField pwBox = new PasswordField();
-        grid.add(pwBox, 1, 3);
-
-
-        Button Enter = new Button("Enter");
-        HBox hbBtn = new HBox(10);
-        hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
-        hbBtn.getChildren().add(Enter);
-        grid.add(hbBtn, 1, 4);
+    Encrypt.setOnAction(new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+        	Encrypt_GUI enc = new Encrypt_GUI();
+					enc.encrypt();
 
 
 
-        final Text actiontarget = new Text();
-            grid.add(actiontarget, 1, 6);
-
-        Enter.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-            	String Filepath = path.getText();
-            	String filename = name.getText();
-            	String Key = pwBox.getText();
-                actiontarget.setFill(Color.FIREBRICK);
-                actiontarget.setText("Sign in Button Pressed");
-                System.out.println(Filepath);
-
-                CryptoTime(Filepath, filename, Key);
-
-            }
-        });
-        Scene scene= new Scene(grid, 500, 475);
-        StackPane root = new StackPane();
-        primaryStage.setScene(scene);
-        primaryStage.show();
-    }
+        }
+    });
+    Decrypt.setOnAction(new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+        	Decrypt_GUI dec = new Decrypt_GUI();
+					dec.decrypt();
 
 
 
 
 
-public static void CryptoTime(String Filepath, String FileName, String key){
-	File inputFile = new File(Filepath + "/" + FileName);
-	File encryptedFile = new File(Filepath + "/" + FileName + "_encrypted.txt");
-	try {
-	    CryptoUtils.encrypt(key, inputFile, encryptedFile);
 
-	} catch (CryptoException ex) {
-	    System.out.println(ex.getMessage());
-	    ex.printStackTrace();
-	}
-	inputFile.delete();
+        }
+    });
 
+
+    Scene scene= new Scene(grid, 500, 475);
+    StackPane root = new StackPane();
+    primaryStage.setScene(scene);
+    primaryStage.show();
 }
 }
-
-
-
-
-
