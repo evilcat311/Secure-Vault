@@ -1,6 +1,10 @@
 package sample;
 
 import java.io.File;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
+import javax.xml.bind.DatatypeConverter;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -84,7 +88,12 @@ public class Decrypt_GUI{
                 actiontarget.setText("Sign in Button Pressed");
                 System.out.println(Filepath);
 
-                CryptoTime(Filepath, filename, Key);
+                try {
+					CryptoTime(Filepath, filename, Key);
+				} catch (NoSuchAlgorithmException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 
             }
         });
@@ -98,11 +107,17 @@ public class Decrypt_GUI{
 
 
 
-public static void CryptoTime(String Filepath, String FileName, String key){
+public static void CryptoTime(String Filepath, String FileName, String key)throws NoSuchAlgorithmException{
 	File inputFile = new File(Filepath + "/" + FileName + "_encrypted");
 	File encryptedFile = new File(Filepath + "/" + FileName);
+
+	MessageDigest md = MessageDigest.getInstance("MD5");
+    md.update(key.getBytes());
+    byte[] digest = md.digest();
+    String Password = DatatypeConverter.printHexBinary(digest).toUpperCase().substring(0,16);
+
 	try {
-	    CryptoUtils.decrypt(key, inputFile, encryptedFile);
+	    CryptoUtils.decrypt(Password, inputFile, encryptedFile);
 
 	} catch (CryptoException ex) {
 	    System.out.println(ex.getMessage());
